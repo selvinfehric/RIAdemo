@@ -27,6 +27,6 @@ jruby -S gem install dm-sqlite-adapter
 jruby -S gem install datamapper
 
 # Moving to app home directory and executing startup script which loads other required files and libraries and starts Jetty server
-cd $OPENSHIFT_REPO_DIR/diy
+cd $OPENSHIFT_REPO_DIR
 jruby start-app.rb
 

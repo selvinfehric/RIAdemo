@@ -23,7 +23,15 @@ module JRubyVaadin
     java_import 'org.eclipse.jetty.server.Server'
     java_import 'org.eclipse.jetty.servlet.ServletHolder'
     java_import 'org.eclipse.jetty.webapp.WebAppContext'
-    server = Server.new(port)
+    java_import 'java.net.InetSocketAddress'
+
+    ip = ENV['OPENSHIFT_DIY_IP'] ? ENV['OPENSHIFT_DIY_IP'] : "localhost"
+    port = ENV['OPENSHIFT_DIY_PORT'] ? ENV['OPENSHIFT_DIY_PORT'].to_i : 8080
+
+    address = InetSocketAddress.new(ip, port)
+    # address = InetSocketAddress.new("127.5.48.1", 8080)
+    server = Server.new(address)
+
     context = WebAppContext.new
     context.resource_base= "./"
     context.context_path = context_path 
