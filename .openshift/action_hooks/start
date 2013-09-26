@@ -1,0 +1,32 @@
+#!/bin/bash
+# The logic to start up your application should be put in this
+# script. The application will work only if it binds to
+# $OPENSHIFT_DIY_IP:8080
+# nohup $OPENSHIFT_REPO_DIR/diy/testrubyserver.rb $OPENSHIFT_DIY_IP $OPENSHIFT_REPO_DIR/diy > $OPENSHIFT_DIY_DIR/logs/server.log 2>&1 &
+
+cd $OPENSHIFT_DIY_DIR
+DOWNLOAD_URL=http://jruby.org.s3.amazonaws.com/downloads/1.7.4/jruby-bin-1.7.4.tar.gz
+
+# Download JRuby binary from official site
+wget -O jruby.tar.gz $DOWNLOAD_URL
+
+# Create directory for JRuby binary files
+mkdir jruby
+
+# Extract downloaded JRuby tar file
+tar -xvzf jruby.tar.gz -C jruby --strip-components=1
+
+# Installation of Sqlite adapter
+# yum install sqlite-devel # Check?
+
+# Adding JRuby bin folder to PATH for easier JRuby executions
+export PATH=$PATH:$OPENSHIFT_DIY_DIR/jruby/bin/
+
+# Installation of Sqlite adapter and DataMapper gems and its dependencies
+jruby -S gem install dm-sqlite-adapter
+jruby -S gem install datamapper
+
+# Moving to app home directory and executing startup script which loads other required files and libraries and starts Jetty server
+cd $OPENSHIFT_REPO_DIR/diy
+jruby start-app.rb
+
