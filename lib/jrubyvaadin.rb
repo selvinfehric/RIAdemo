@@ -29,7 +29,6 @@ module JRubyVaadin
     port = ENV['OPENSHIFT_DIY_PORT'] ? ENV['OPENSHIFT_DIY_PORT'].to_i : 8080
 
     address = InetSocketAddress.new(ip, port)
-    # address = InetSocketAddress.new("127.5.48.1", 8080)
     server = Server.new(address)
 
     context = WebAppContext.new
